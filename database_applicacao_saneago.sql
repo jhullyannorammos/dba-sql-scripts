@@ -1,7 +1,11 @@
 create database applicacao;
+drop database applicacao;
 
+select * from application.usuarios;
+
+use applicacao;
     create table colaboradores (
-       codigo bigint not null auto_increment,
+        codigo bigint not null auto_increment,
         nomecompleto varchar(255) not null,
         cargo varchar(255),
         matricula varchar(255) not null,
@@ -16,7 +20,7 @@ create database applicacao;
         hierarquia varchar(255),
         sigla varchar(255),
         primary key (codigo)
-    ) 
+    );
 
     
     create table itens (
@@ -75,52 +79,51 @@ create database applicacao;
         primary key (codigo)
     ); 
 
-    
-    alter table colaboradores drop index unique_matricula
-    alter table colaboradores add constraint unique_matricula unique (matricula)
-    alter table departamentos drop index unique_sigla
-    alter table departamentos add constraint unique_sigla unique (sigla)
-    alter table itens drop index unique_cod_barras
-    alter table itens add constraint unique_cod_barras unique (codigoBarras)
-    alter table mercadorias drop index mercadoria_patrimonio
-    alter table mercadorias add constraint mercadoria_patrimonio unique (patrimonio)
-    alter table mercadorias drop index UK_jtns5nvk80o5tbsdib89dqt77
-    alter table mercadorias add constraint UK_jtns5nvk80o5tbsdib89dqt77 unique (serialnumber)
-    alter table modelos drop index UK_og0p4uud2cnfk79gm1ymcl9b3
-    alter table modelos add constraint UK_og0p4uud2cnfk79gm1ymcl9b3 unique (modelo);
-    alter table usuarios drop index UK_hdcx3k0fxfjjfo4ywpqcx4g59;
-    alter table usuarios add constraint UK_hdcx3k0fxfjjfo4ywpqcx4g59 unique (logon);
-    alter table usuarios drop index UK_9kbs0gestj1exlmstkatqbwnu;
-    alter table usuarios add constraint UK_9kbs0gestj1exlmstkatqbwnu unique (colaborador_codigo);
+    alter table colaboradores drop index unique_matricula;
+    alter table colaboradores add constraint unique_matricula unique (matricula);
+    alter table departamentos drop index unique_sigla;
+    alter table departamentos add constraint unique_sigla unique (sigla);
+    alter table itens drop index unique_cod_barras;
+    alter table itens add constraint unique_cod_barras unique (codigoBarras);
+    alter table mercadorias drop index mercadoria_patrimonio;
+    alter table mercadorias add constraint mercadoria_patrimonio unique (patrimonio);
+    alter table mercadorias drop index mercadoria_serialnumber;
+    alter table mercadorias add constraint mercadoria_serialnumber unique (serialnumber);
+    alter table modelos drop index modelos_modelo;
+    alter table modelos add constraint modelos_modelo unique (modelo);
+    alter table usuarios drop index usuario_logon;
+    alter table usuarios add constraint usuario_logon unique (logon);
+    alter table usuarios drop index usuario_colaborador;
+    alter table usuarios add constraint usuario_colaborador unique (colaborador_codigo);
     
     alter table colaboradores 
-       add constraint FKagf476gfovssg2rq7gysmf93x 
+       add constraint dep_colaboradores 
        foreign key (departamento_codigo) 
        references departamentos (codigo);
 
     
     alter table mercadorias 
-       add constraint FKqn7d5dfn1rdn9lv11yc5nkb07 
+       add constraint modelo_mercadorias 
        foreign key (modelo_id) 
        references modelos (codigo);
 
     
     alter table movimentacao 
-       add constraint FK5u2kuvc3cc680c1fh4kjlcmkg 
+       add constraint col_movimentacao 
        foreign key (colaborador_id) 
        references colaboradores (codigo);
 
     alter table movimentacao 
-       add constraint FK70lsx3jpw1d0xq5uuw44db18d 
+       add constraint dep_movimentacao 
        foreign key (departamento_id) 
        references departamentos (codigo);
 
     alter table movimentacao 
-       add constraint FKc5ckwq1cgnquos4mo9jfw3nx8 
+       add constraint merc_movimentacao 
        foreign key (mercadoria_id) 
        references mercadorias (codigo);
 
     alter table usuarios 
-       add constraint FKciffe74qx59lkiul5aqrmb41b 
+       add constraint col_usuarios 
        foreign key (colaborador_codigo) 
        references colaboradores (codigo);
